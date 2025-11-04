@@ -14,8 +14,8 @@ export function GetDevices() {
   return window['go']['backend']['App']['GetDevices']();
 }
 
-export function GetFastbootTest() {
-  return window['go']['backend']['App']['GetFastbootTest']();
+export function GetFastbootDevices() {
+  return window['go']['backend']['App']['GetFastbootDevices']();
 }
 
 export function Greet(arg1) {

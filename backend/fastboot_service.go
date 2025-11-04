@@ -2,6 +2,7 @@ package backend
 
 import (
 	"fmt"
+	"strings"
 )
 func (a *App) WipeData() error {
 	output, err := a.runCommand("fastboot", "-w")
@@ -23,11 +24,28 @@ func (a *App) FlashPartition(partition string, filePath string) error {
 	return nil
 }
 
-func (a *App) GetFastbootTest() (string, error) {
-    output, err := a.runCommand("fastboot", "getvar", "product")
-    if err != nil {
-        return "", err
-    }
+func (a *App) GetFastbootDevices() ([]Device, error) {
+	output, err := a.runCommand("fastboot", "devices")
+	if err != nil {
+		if output == "" {
+			return []Device{}, nil
+		}
+		return nil, err
+	}
 
-    return output, nil
+	var devices []Device
+	lines := strings.Split(output, "\n")
+
+	for _, line := range lines {
+		parts := strings.Fields(line)
+		if len(parts) >= 2 && parts[1] == "fastboot" {
+			// Outputnya adalah "SERIAL_NUMBER    fastboot"
+			devices = append(devices, Device{
+				Serial: parts[0],
+				Status: parts[1], // Statusnya akan "fastboot"
+			})
+		}
+	}
+
+	return devices, nil
 }

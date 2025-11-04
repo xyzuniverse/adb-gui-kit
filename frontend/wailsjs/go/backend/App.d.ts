@@ -8,7 +8,7 @@ export function GetDeviceInfo():Promise<backend.DeviceInfo>;
 
 export function GetDevices():Promise<Array<backend.Device>>;
 
-export function GetFastbootTest():Promise<string>;
+export function GetFastbootDevices():Promise<Array<backend.Device>>;
 
 export function Greet(arg1:string):Promise<string>;
 
