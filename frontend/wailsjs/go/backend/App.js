@@ -22,12 +22,24 @@ export function Greet(arg1) {
   return window['go']['backend']['App']['Greet'](arg1);
 }
 
+export function InstallPackage(arg1) {
+  return window['go']['backend']['App']['InstallPackage'](arg1);
+}
+
 export function Reboot(arg1) {
   return window['go']['backend']['App']['Reboot'](arg1);
 }
 
+export function SelectApkFile() {
+  return window['go']['backend']['App']['SelectApkFile']();
+}
+
 export function SelectImageFile() {
   return window['go']['backend']['App']['SelectImageFile']();
+}
+
+export function UninstallPackage(arg1) {
+  return window['go']['backend']['App']['UninstallPackage'](arg1);
 }
 
 export function WipeData() {

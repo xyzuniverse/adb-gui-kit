@@ -27,3 +27,19 @@ func (a *App) SelectImageFile() (string, error) {
 
 	return selectedPath, nil
 }
+
+func (a *App) SelectApkFile() (string, error) {
+	selectedPath, err := runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{
+		Title: "Select APK File",
+		Filters: []runtime.FileFilter{
+			{
+				DisplayName: "Android Package (*.apk)",
+				Pattern:     "*.apk",
+			},
+		},
+	})
+	if err != nil {
+		return "", err
+	}
+	return selectedPath, nil
+}

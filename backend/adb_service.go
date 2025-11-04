@@ -3,6 +3,7 @@ package backend
 import (
 	"regexp"
 	"strings"
+	"fmt"
 )
 
 func (a *App) GetDevices() ([]Device, error) {
@@ -68,4 +69,20 @@ func (a *App) Reboot(mode string) error {
 	}
 
 	return nil
+}
+
+func (a *App) InstallPackage(filePath string) (string, error) {
+	output, err := a.runCommand("adb", "install", "-r", filePath)
+	if err != nil {
+		return "", fmt.Errorf("failed to install package: %w. Output: %s", err, output)
+	}
+	return output, nil
+}
+
+func (a *App) UninstallPackage(packageName string) (string, error) {
+	output, err := a.runCommand("adb", "shell", "pm", "uninstall", packageName)
+	if err != nil {
+		return "", fmt.Errorf("failed to uninstall package: %w. Output: %s", err, output)
+	}
+	return output, nil
 }

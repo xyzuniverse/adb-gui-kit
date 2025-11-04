@@ -12,8 +12,14 @@ export function GetFastbootDevices():Promise<Array<backend.Device>>;
 
 export function Greet(arg1:string):Promise<string>;
 
+export function InstallPackage(arg1:string):Promise<string>;
+
 export function Reboot(arg1:string):Promise<void>;
 
+export function SelectApkFile():Promise<string>;
+
 export function SelectImageFile():Promise<string>;
+
+export function UninstallPackage(arg1:string):Promise<string>;
 
 export function WipeData():Promise<void>;
