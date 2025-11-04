@@ -14,4 +14,6 @@ export function Greet(arg1:string):Promise<string>;
 
 export function Reboot(arg1:string):Promise<void>;
 
+export function SelectImageFile():Promise<string>;
+
 export function WipeData():Promise<void>;

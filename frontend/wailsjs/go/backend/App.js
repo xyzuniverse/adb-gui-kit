@@ -26,6 +26,10 @@ export function Reboot(arg1) {
   return window['go']['backend']['App']['Reboot'](arg1);
 }
 
+export function SelectImageFile() {
+  return window['go']['backend']['App']['SelectImageFile']();
+}
+
 export function WipeData() {
   return window['go']['backend']['App']['WipeData']();
 }
