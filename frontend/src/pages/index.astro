@@ -1,25 +1,23 @@
 ---
-import '../styles/global.css';
-// Component Imports
-import { Button } from "@/components/ui/button";
-
-// Full Astro Component Syntax:
-// https://docs.astro.build/basics/astro-components/
+import { MainLayout } from '@/components/MainLayout';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro + TailwindCSS</title>
-	</head>
-
-	<body>
-		<div class="grid place-items-center h-screen content-center">
-			<Button>Test Button</Button>
-		</div>
-
-	</body>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <title>ADB-Kit</title>
+    <style is:global>
+      body, html {
+        margin: 0;
+        padding: 0;
+        background-color: hsl(var(--background));
+        color: hsl(var(--foreground));
+      }
+    </style>
+  </head>
+  <body>
+    <MainLayout client:load />
+  </body>
 </html>
