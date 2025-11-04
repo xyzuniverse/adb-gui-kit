@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-
-import { WipeData, FlashPartition, SelectImageFile } from '../../../wailsjs/go/backend/App';
+import React, { useState, useEffect } from 'react'; 
+import { WipeData, FlashPartition, SelectImageFile, GetFastbootDevices } from '../../../wailsjs/go/backend/App';
+import { backend } from '../../../wailsjs/go/models';
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,14 +17,40 @@ import {
   AlertDialogTrigger 
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
-import { Loader2, AlertTriangle, FileUp, Trash2 } from "lucide-react";
+import { Loader2, AlertTriangle, FileUp, Trash2, Smartphone, RefreshCw } from "lucide-react";
+
+type Device = backend.Device;
 
 export function ViewFlasher() {
   const [partition, setPartition] = useState('');
   const [filePath, setFilePath] = useState('');
   const [isFlashing, setIsFlashing] = useState(false);
-
   const [isWiping, setIsWiping] = useState(false);
+
+  const [fastbootDevices, setFastbootDevices] = useState<Device[]>([]);
+  const [isRefreshingFastboot, setIsRefreshingFastboot] = useState(false);
+
+  const refreshFastbootDevices = async () => {
+    setIsRefreshingFastboot(true);
+    try {
+      const result = await GetFastbootDevices();
+      setFastbootDevices(result || []);
+    } catch (error) {
+      console.error("Error refreshing fastboot devices:", error);
+      setFastbootDevices([]);
+    }
+    setIsRefreshingFastboot(false);
+  };
+
+  useEffect(() => {
+    refreshFastbootDevices();
+    const interval = setInterval(() => {
+      if (!isRefreshingFastboot) {
+        refreshFastbootDevices();
+      }
+    }, 3000); 
+    return () => clearInterval(interval);
+  }, [isRefreshingFastboot]);
 
   const handleSelectFile = async () => {
     try {
@@ -83,6 +109,40 @@ export function ViewFlasher() {
     <div className="flex flex-col gap-6">
 
       <Card>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle className="flex items-center gap-2">
+            <Smartphone />
+            Fastboot Devices
+          </CardTitle>
+          <Button variant="ghost" size="icon" onClick={refreshFastbootDevices} disabled={isRefreshingFastboot}>
+            {isRefreshingFastboot ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <RefreshCw className="h-4 w-4" />
+            )}
+          </Button>
+        </CardHeader>
+        <CardContent>
+          {fastbootDevices.length === 0 ? (
+            <p className="text-muted-foreground">
+              {isRefreshingFastboot ? "Scanning for devices..." : "No fastboot device detected. Put your device in fastboot/bootloader mode."}
+            </p>
+          ) : (
+            <div className="flex flex-col gap-2">
+              {fastbootDevices.map((device) => (
+                <div key={device.serial} className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                  <span className="font-mono">{device.serial}</span>
+                  <span className="font-semibold text-blue-500">
+                    {device.status}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <FileUp />
@@ -123,7 +183,7 @@ export function ViewFlasher() {
 
           <Button 
             className="w-full"
-            disabled={isFlashing || !partition || !filePath}
+            disabled={isFlashing || !partition || !filePath || fastbootDevices.length === 0}
             onClick={handleFlash}
           >
             {isFlashing ? (
@@ -152,7 +212,7 @@ export function ViewFlasher() {
               <Button 
                 variant="destructive" 
                 className="w-full"
-                disabled={isWiping}
+                disabled={isWiping || fastbootDevices.length === 0}
               >
                 {isWiping ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -184,7 +244,6 @@ export function ViewFlasher() {
           </AlertDialog>
         </CardContent>
       </Card>
-
     </div>
   );
 }
