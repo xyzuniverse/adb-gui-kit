@@ -7,3 +7,5 @@ export function GetDeviceInfo():Promise<backend.DeviceInfo>;
 export function GetDevices():Promise<Array<backend.Device>>;
 
 export function Greet(arg1:string):Promise<string>;
+
+export function Reboot(arg1:string):Promise<void>;

@@ -13,3 +13,7 @@ export function GetDevices() {
 export function Greet(arg1) {
   return window['go']['backend']['App']['Greet'](arg1);
 }
+
+export function Reboot(arg1) {
+  return window['go']['backend']['App']['Reboot'](arg1);
+}
