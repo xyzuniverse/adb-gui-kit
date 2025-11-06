@@ -1,19 +1,67 @@
-# README
+# ADB-Kit 
 
-## About
+A simple, modern GUI for ADB and Fastboot. 
+Built with Wails (Go + React) for a fast, lightweight.
 
-This is the official Wails Vanilla template.
+---
 
-You can configure the project by editing `wails.json`. More information about the project settings can be found
-here: https://wails.io/docs/reference/project-config
+##  Features
 
-## Live Development
+* **Dashboard:**
+    * View connected device info (Model, Battery, Status).
+    * Auto-detects ADB & Fastboot devices.
+* **Utilities:**
+    * One-click reboot buttons (Reboot, Recovery, Bootloader).
+* **App Manager:**
+    * Install APKs from your computer.
+    * Uninstall packages by name.
+    * Includes a confirmation dialog to prevent mistakes.
+* **File Explorer:**
+    * Browse device `/sdcard/` directory.
+    * **Push:** Upload files from PC to device.
+    * **Pull:** Download files/folders from device to PC.
+    * Includes loading and empty folder states.
+* **Flasher:**
+    * Flash `.img` files to a specific partition (e.g., `boot`, `recovery`).
+    * Wipe Data (Factory Reset) with a safety confirmation dialog.
+    * Flash a flashable ZIP via adb sideload while your device is in recovery.
 
-To run in live development mode, run `wails dev` in the project directory. This will run a Vite development
-server that will provide very fast hot reload of your frontend changes. If you want to develop in a browser
-and have access to your Go methods, there is also a dev server that runs on http://localhost:34115. Connect
-to this in your browser, and you can call your Go code from devtools.
+---
 
-## Building
+##  Installation
 
-To build a redistributable, production mode package, use `wails build`.
+1.  Go to the **[Releases](https://github.com/drenzzz/adb-gui-kit/releases)** page.
+2.  Download the `.zip` (Windows) file.
+3.  Unzip the file.
+4.  **IMPORTANT:** Make sure the `ADB-Kit` executable is in the same folder as the `bin/` directory (which contains `adb` and `fastboot` file).
+5.  Run the application.
+
+---
+
+##  Tech Stack
+
+* **Framework:** Wails v2
+* **Backend:** Go
+* **Frontend:** React (via Astro) & TypeScript
+* **UI:** shadcn/ui & Tailwind CSS
+
+---
+
+##  Building from Source
+
+1.  Ensure you have Wails dependencies: `wails doctor`
+2.  Install frontend dependencies:
+    ```bash
+    cd frontend
+    pnpm install
+    cd ..
+    ```
+3.  Run in development mode:
+    ```bash
+    wails dev
+    ```
+4.  Build for production:
+    ```bash
+    wails build
+    ```
+    
