@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "@/styles/global.css";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,6 +30,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 import { ThemeToggle } from "./ThemeToggle";
 import { ThemeProvider } from "./ThemeProvider";
+import { WelcomeScreen } from "./WelcomeScreen";
 
 const VIEWS = {
   DASHBOARD: "dashboard",
@@ -50,9 +51,13 @@ const pageVariants = {
 const navButtonClass =
   "w-full text-base transition-colors duration-200 hover:bg-muted/70 dark:hover:bg-muted/30";
 
+const LOADING_DURATION = 750;
+
 export function MainLayout() {
   const [activeView, setActiveView] = useState<ViewType>(VIEWS.DASHBOARD);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
 
   const navIconClass = cn(
     "h-4 w-4 transition-all duration-200",
@@ -76,10 +81,55 @@ export function MainLayout() {
     }
   };
 
+  useEffect(() => {
+    let animationFrame: number;
+    let startTime: number | null = null;
+
+    const tick = (timestamp: number) => {
+      if (startTime === null) {
+        startTime = timestamp;
+      }
+      const elapsed = timestamp - startTime;
+      const nextProgress = Math.min(
+        100,
+        (elapsed / LOADING_DURATION) * 100
+      );
+      setProgress(nextProgress);
+
+      if (elapsed < LOADING_DURATION) {
+        animationFrame = requestAnimationFrame(tick);
+      } else {
+        setIsLoading(false);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(tick);
+
+    return () => cancelAnimationFrame(animationFrame);
+  }, []);
+
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
       <TooltipProvider delayDuration={0}>
-        <div className="relative flex h-screen bg-background text-foreground overflow-hidden">
+        <AnimatePresence>
+          {isLoading && (
+            <motion.div
+              key="welcome-screen"
+              initial={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="absolute inset-0 z-50" 
+            >
+              <WelcomeScreen progress={progress} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <div
+          className={cn(
+            "relative flex h-screen bg-background text-foreground overflow-hidden",
+            isLoading ? "opacity-0" : "opacity-100 transition-opacity duration-500 ease-in-out"
+          )}
+        >
           <aside
             className={cn(
               "flex flex-col border-r bg-muted/40 transition-all duration-300 ease-in-out",
