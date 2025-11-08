@@ -7,9 +7,11 @@ import { cn } from "@/lib/utils";
 export function ThemeToggle({
   className,
   isCollapsed,
+  showLabel = true,
 }: {
   className?: string;
   isCollapsed?: boolean;
+  showLabel?: boolean;
 }) {
   const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -18,19 +20,21 @@ export function ThemeToggle({
     setMounted(true);
   }, []);
 
+  const shouldShowLabel = showLabel && !isCollapsed;
+
   if (!mounted) {
     return (
       <Button
         variant="ghost"
         className={cn(
-          "justify-start text-base transition-colors duration-200 hover:bg-muted/70 dark:hover:bg-muted/30",
-          className,
-          isCollapsed && "justify-center px-0"
+          "text-base transition-colors duration-200 hover:bg-muted/70 dark:hover:bg-muted/30",
+          shouldShowLabel ? "justify-start" : "justify-center px-0",
+          className
         )}
         disabled
       >
-        <Sun className={cn("h-4 w-4", !isCollapsed && "mr-2")} />
-        <span className={cn(isCollapsed && "hidden")}>Loading...</span>
+        <Sun className={cn("h-4 w-4", shouldShowLabel && "mr-2")} />
+        {shouldShowLabel && <span>Loading...</span>}
       </Button>
     );
   }
@@ -41,16 +45,16 @@ export function ThemeToggle({
     setTheme(isDark ? "light" : "dark");
   };
 
-  const iconClass = cn("h-4 w-4", !isCollapsed && "mr-2");
+  const iconClass = cn("h-4 w-4", shouldShowLabel && "mr-2");
 
   return (
     <Button
       variant="ghost"
       onClick={toggleTheme}
       className={cn(
-        "justify-start text-base transition-colors duration-200 hover:bg-muted/70 dark:hover:bg-muted/30",
-        className,
-        isCollapsed && "justify-center px-0"
+        "text-base transition-colors duration-200 hover:bg-muted/70 dark:hover:bg-muted/30",
+        shouldShowLabel ? "justify-start" : "justify-center px-0",
+        className
       )}
     >
       {isDark ? (
@@ -58,9 +62,11 @@ export function ThemeToggle({
       ) : (
         <Moon className={iconClass} />
       )}
-      <span className={cn(isCollapsed && "hidden")}>
-        {isDark ? "Light Mode" : "Dark Mode"}
-      </span>
+      {shouldShowLabel && (
+        <span>
+          {isDark ? "Light Mode" : "Dark Mode"}
+        </span>
+      )}
     </Button>
   );
 }

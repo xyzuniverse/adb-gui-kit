@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import "@/styles/global.css";
-import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard,
   Box,
@@ -158,7 +157,7 @@ export function MainLayout() {
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="relative flex flex-col bg-gradient-to-b from-muted/50 via-muted/30 to-background border-r border-border/50 backdrop-blur-xl"
           >
-            <div className="relative h-20 flex items-center justify-between px-4 border-b border-border/50">
+            <div className="relative h-20 flex items-center px-3 border-b border-border/50 gap-3 justify-between">
               <motion.div 
                 className="flex items-center gap-3"
                 animate={{ justifyContent: isCollapsed ? "center" : "flex-start" }}
@@ -189,6 +188,12 @@ export function MainLayout() {
                   )}
                 </AnimatePresence>
               </motion.div>
+              {!isCollapsed && (
+                <ThemeToggle
+                  showLabel={false}
+                  className="ml-auto w-12 h-12 rounded-2xl border border-border/60 p-0"
+                />
+              )}
             </div>
 
             <nav className="flex-1 p-3 space-y-1.5 overflow-y-auto">
@@ -268,22 +273,6 @@ export function MainLayout() {
                 );
               })}
             </nav>
-
-            <div
-              className={cn(
-                "border-t border-border/50 p-3",
-                isCollapsed && "flex justify-center"
-              )}
-            >
-              <ThemeToggle
-                isCollapsed={isCollapsed}
-                className={cn(
-                  "w-full rounded-xl text-sm font-medium",
-                  "hover:bg-muted/40 transition-colors",
-                  isCollapsed && "w-12 h-12 p-0"
-                )}
-              />
-            </div>
 
             <Tooltip>
               <TooltipTrigger asChild>
