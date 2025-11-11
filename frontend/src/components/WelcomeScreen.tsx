@@ -18,7 +18,7 @@ export function WelcomeScreen({ progress }: WelcomeScreenProps) {
         />
 
         <div className="w-56 space-y-2">
-                        <h1 className="text-xl font-bold text-foreground text-center">ADB-Kit</h1>
+                        <h1 className="text-xl font-bold text-foreground text-center">ADBKit</h1>
 
           <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
             <div

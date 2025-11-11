@@ -63,7 +63,7 @@ const NAV_ITEMS = [
   { id: VIEWS.FILES, icon: FolderOpen, label: "File" },
   { id: VIEWS.FLASHER, icon: Terminal, label: "Flasher" },
   { id: VIEWS.UTILS, icon: Settings, label: "Utility" },
-  { id: VIEWS.SHELL, icon: Terminal, label: "Shell" },
+  { id: VIEWS.SHELL, icon: Terminal, label: "Terminal" },
 ];
 
 export function MainLayout() {
@@ -166,7 +166,7 @@ export function MainLayout() {
                   <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full" />
                   <img
                     src="/logo.png"
-                    alt="ADB Kit logo"
+                    alt="ADBKit logo"
                     className={cn(
                       "relative h-10 w-10 object-contain transition-all duration-300",
                       isCollapsed && "h-11 w-11"
@@ -182,7 +182,7 @@ export function MainLayout() {
                       transition={{ duration: 0.2 }}
                     >
                       <h1 className="text-2xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-                        ADB Kit
+                        ADBKit
                       </h1>
                     </motion.div>
                   )}
