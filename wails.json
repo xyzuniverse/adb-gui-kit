@@ -32,7 +32,12 @@
       ]
     },
     "resources": [
-      "bin/"
+      "bin/linux/"
+    ]
+  },
+  "windows": {
+    "resources": [
+      "bin/windows/"
     ]
   }
 }
